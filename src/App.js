@@ -1,4 +1,13 @@
 import React, { useState } from 'react';
+import ReactTable from 'react-table';
+import {
+  useTable,
+  useGroupBy,
+  useFilters,
+  useSortBy,
+  useExpanded,
+  usePagination,
+} from 'react-table'
 import './App.css';
 
 function App() {
@@ -18,20 +27,38 @@ function App() {
     setKeyword(e.target.value);
   };
 
-  const tableRows = data.map((item, index) => (
-    <tr key={index}>
-      <td>{item.full_name}</td>
-      <td>
-        <a href={item.html_url}>{item.html_url}</a>
-      </td>
-    </tr>
-  ));
+  // const tableRows = data.map((item, index) => (
+  //   <tr key={index}>
+  //     <td>{item.full_name}</td>
+  //     <td>
+  //       <a href={item.html_url}>{item.html_url}</a>
+  //     </td>
+  //   </tr>
+  // ));
+
+  const columns = [
+    {
+      Header: 'Name', // Header of the column
+      accessor: 'full_name', // Value accessor
+    },
+    {
+      Header: 'URL',
+      accessor: 'html_url',
+    },
+    {
+      Header: 'Owner',
+      accessor: 'owner.login',
+    },
+  ];
+
   return (
-  <div className='App'>
-    <input type="text" onChange={handleChange} />
-    <button onClick={fetchData} value={keyword}>FETCH</button>
-  <table><tbody>{tableRows}</tbody></table>
-  </div>
+    <div className='App'>
+      <input type='text' onChange={handleChange} />
+      <button onClick={fetchData} value={keyword}>
+        fetch
+      </button>
+      <ReactTable data={data} columns={columns} />
+    </div>
   );
 }
 
